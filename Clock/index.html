@@ -13,6 +13,8 @@
         <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
       </div>
+      <div class="analog">
+      </div>
     </div>
 
 
@@ -49,6 +51,13 @@
         0 0 10px rgba(0,0,0,0.2);
     }
 
+    .analog {
+      width: 40rem;
+      height: 10rem;
+      margin: 50px auto;
+      position: relative;
+    }
+
     .clock-face {
       position: relative;
       width: 100%;
@@ -62,11 +71,39 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all .05s;
+      transition-timing-function: cubic-bezier(0, 1.72, 0.58, 1);
     }
 
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+    const analog = document.querySelector('.analog');
+
+    function setDate(){
+      const now = new Date();
+      const hours = now.getHours();
+      const mins = now.getMinutes()
+      const secs = now.getSeconds();
+
+      analog.textContent = `${hours} : ${mins} : ${secs}`;
+
+      const secondsInDegrees = ((secs/60) * 360) + 90;
+      secondHand.style.transform = `rotate(${secondsInDegrees}deg)`;
+  
+      const minutesInDegrees = (mins/60) * 360;
+      minuteHand.style.transform =  `rotate(${minutesInDegrees}deg)`;
+
+      const hoursInDegrees = (hours/12) * 360;
+      hourHand.style.transform =  `rotate(${hoursInDegrees}deg)`;
+    }
+
+    setInterval(setDate, 1000);
 
 
   </script>
